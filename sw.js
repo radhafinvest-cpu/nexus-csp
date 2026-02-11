@@ -1,5 +1,5 @@
 // Nexus CSP Service Worker
-const CACHE_NAME = 'nexus-csp-v1';
+const CACHE_NAME = 'radhe-finvest-v1';
 const urlsToCache = [
     './',
     './index.html',

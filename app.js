@@ -1,5 +1,5 @@
 /* =========================================
-   NEXUS CSP - Complete Application Logic
+   RADHE FINVEST - Complete Application Logic
    ========================================= */
 
 // ============ SHOP CONFIGURATION ============
@@ -64,10 +64,10 @@ const DEFAULT_DB = {
 };
 
 // ============ 2. DATABASE ============
-let DB = JSON.parse(localStorage.getItem('nexusCSP_v3'));
+let DB = JSON.parse(localStorage.getItem('radheFinvest_v1'));
 if (!DB || !DB.services) {
     DB = JSON.parse(JSON.stringify(DEFAULT_DB)); // Deep copy
-    localStorage.setItem('nexusCSP_v3', JSON.stringify(DB));
+    localStorage.setItem('radheFinvest_v1', JSON.stringify(DB));
 }
 
 // Ensure new properties exist (for upgrades)
@@ -81,7 +81,7 @@ if (!DB.bankAccountService) {
 }
 
 function saveDB() {
-    localStorage.setItem('nexusCSP_v3', JSON.stringify(DB));
+    localStorage.setItem('radheFinvest_v1', JSON.stringify(DB));
 }
 
 // ============ 3. APP STATE ============
