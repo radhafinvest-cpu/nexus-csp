@@ -1,0 +1,31 @@
+{
+    "name": "nexus-csp",
+    "homepage": "https://RadheFinvest.github.io/nexus-csp",
+    "version": "1.0.0",
+    "description": "Nexus CSP Banking Kiosk Application",
+    "main": "index.html",
+    "scripts": {
+        "start": "npx serve .",
+        "predeploy": "xcopy /y \"index.html\" \"www\\\" && xcopy /y \"app.js\" \"www\\\" && xcopy /y \"style.css\" \"www\\\" && xcopy /y \"manifest.json\" \"www\\\" && xcopy /y \"sw.js\" \"www\\\" && if exist \"icons\" xcopy /s /y \"icons\" \"www\\icons\\\"",
+        "deploy": "gh-pages -d www",
+        "build": "echo 'No build step required for static files'",
+        "cap:init": "npx cap init \"Nexus CSP\" \"com.radhefinvest.nexuscsp\" --web-dir .",
+        "cap:add:android": "npx cap add android",
+        "cap:sync": "npx cap sync",
+        "cap:open:android": "npx cap open android"
+    },
+    "keywords": [
+        "banking",
+        "kiosk",
+        "csp",
+        "services"
+    ],
+    "author": "Radhe Finvest",
+    "license": "MIT",
+    "devDependencies": {
+        "@capacitor/android": "^5.0.0",
+        "@capacitor/cli": "^5.0.0",
+        "@capacitor/core": "^5.0.0",
+        "gh-pages": "^6.3.0"
+    }
+}

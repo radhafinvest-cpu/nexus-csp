@@ -1,0 +1,11 @@
+{
+    "appId": "com.radhefinvest.nexuscsp",
+    "appName": "Nexus CSP",
+    "webDir": "www",
+    "server": {
+        "androidScheme": "https"
+    },
+    "android": {
+        "allowMixedContent": true
+    }
+}

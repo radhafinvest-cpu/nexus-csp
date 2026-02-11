@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Nexus CSP</string>
+    <string name="title_activity_main">Nexus CSP</string>
+    <string name="package_name">com.radhefinvest.nexuscsp</string>
+    <string name="custom_url_scheme">com.radhefinvest.nexuscsp</string>
+</resources>
