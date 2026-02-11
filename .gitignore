@@ -1,0 +1,9 @@
+node_modules/
+www/
+dist/
+build/
+.DS_Store
+Thumbs.db
+android/app/build/
+android/.gradle/
+android/captures/
