@@ -1,6 +1,6 @@
 {
-  "name": "nexus-csp",
-  "short_name": "Nexus CSP",
+  "name": "Radhe Finvest",
+  "short_name": "Radhe Finvest",
   "description": "Nexus Customer Service Point - Banking & Services Kiosk Application",
   "start_url": "./index.html",
   "display": "standalone",

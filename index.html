@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Nexus CSP - Banking Kiosk</title>
+    <title>Radhe Finvest - Banking Kiosk</title>
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#6366f1">
@@ -46,7 +46,7 @@
     <div class="app-container">
         <!-- Global Header (Shows Logout when auth) -->
         <header id="main-header" class="hidden">
-            <div class="logo">Nexus Bank</div>
+            <div class="logo">Radhe Finvest</div>
             <button id="logout-btn" class="btn-secondary">Log Out</button>
         </header>
 
@@ -56,7 +56,7 @@
         <section id="login-view" class="view-section fade-in">
             <div class="glass-card">
                 <div style="text-align: center; margin-bottom: 2rem;">
-                    <h1 class="logo" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Nexus CSP</h1>
+                    <h1 class="logo" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Radhe Finvest</h1>
                     <p style="color: var(--text-muted);">Digital Service Point</p>
                 </div>
 
@@ -101,6 +101,12 @@
                         <button type="submit" class="btn-secondary" style="width: 100%; font-size: 0.9rem;">Quick
                             Track</button>
                     </form>
+                    <div style="margin-top: 1.5rem; text-align: center;">
+                        <a href="./nexus-csp.apk" class="download-app-btn"
+                            style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.9em; padding: 10px 15px; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255, 255, 255, 0.05); transition: all 0.3s ease;">
+                            <i class="fas fa-android"></i> <span>Download Android App</span>
+                        </a>
+                    </div>
                 </div>
 
                 <p id="login-error" style="color: #f43f5e; margin-top: 1rem; text-align: center; display: none;">Invalid
@@ -281,10 +287,7 @@
                     <div class="loading-spinner"></div>
                 </button>
 
-                <a href="./nexus-csp.apk" class="download-app-btn"
-                    style="display: block; text-align: center; margin-top: 15px; color: var(--primary); text-decoration: none; font-size: 0.9em; padding: 10px; border: 1px solid var(--primary-light); border-radius: 8px;">
-                    <i class="fas fa-android"></i> Download Android App
-                </a>
+
                 <div class="modal-actions">
                     <button id="modal-btn-cancel" class="btn-secondary">Cancel</button>
                     <button id="modal-btn-confirm" class="btn-primary">Confirm</button>
