@@ -1430,10 +1430,13 @@ function redownloadReceipt(receiptId) {
 let supabaseClient = null;
 
 function initSupabase() {
-    if (DB.supabaseUrl && DB.supabaseKey) {
+    const SUPABASE_URL = 'https://pgvbysfldujvfgoytbja.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_xeBmpXfU78WBYb66NF4Rcw_EvQRAWEX';
+
+    if (SUPABASE_URL && SUPABASE_KEY) {
         try {
-            supabaseClient = supabase.createClient(DB.supabaseUrl, DB.supabaseKey);
-            console.log("Supabase Client Initialized");
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log("Supabase Client Initialized with Hardcoded Credentials");
 
             // Realtime Subscription
             supabaseClient
