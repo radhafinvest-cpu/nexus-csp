@@ -458,6 +458,14 @@ async function initiateServiceApplication(service) {
         status: 'Pending'
     };
 
+    // SAVE TO SUPABASE IF CONNECTED
+    if (supabaseClient) {
+        supabaseClient.from('transactions').insert([record]).then(({ error }) => {
+            if (error) console.error('Supabase Save Error:', error);
+            else console.log('Saved to Supabase');
+        });
+    }
+
     DB.transactions.unshift(record);
     saveDB();
     await Modal.alert('Application Submitted', `Receipt ID: ${record.receiptId}`);
@@ -526,6 +534,14 @@ async function initiateStaffService(service) {
         documents: documents, // Store base64 documents
         status: 'Done'
     };
+
+    // SAVE TO SUPABASE IF CONNECTED
+    if (supabaseClient) {
+        supabaseClient.from('transactions').insert([record]).then(({ error }) => {
+            if (error) console.error('Supabase Save Error:', error);
+            else console.log('Saved to Supabase');
+        });
+    }
 
     DB.transactions.unshift(record);
     saveDB();
@@ -786,6 +802,7 @@ async function showAdminPanel() {
             <button class="admin-tab" data-tab="services">🛠️ Services</button>
             <button class="admin-tab" data-tab="promo">📢 Promo Banner</button>
             <button class="admin-tab" data-tab="bankaccount">🏦 Bank Account</button>
+            <button class="admin-tab" data-tab="cloud">☁️ Cloud Sync</button>
         </div>
         
         <!-- GENERAL TAB -->
@@ -793,6 +810,28 @@ async function showAdminPanel() {
             <div class="admin-card">
                 <h5>Staff Login PIN</h5>
                 <input type="text" id="admin-pin-input" class="input-field" value="${DB.staffPin}" placeholder="Staff PIN">
+            </div>
+        </div>
+
+        <!-- CLOUD SYNC TAB -->
+        <div id="tab-cloud" class="admin-section">
+            <div class="admin-card">
+                <h5 style="color:var(--accent-primary);">☁️ Supabase Cloud Connection</h5>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
+                    Connect your app to the cloud to sync data between devices (Customer <-> Staff).
+                </p>
+                <div class="input-group">
+                    <label class="input-label">Supabase URL</label>
+                    <input type="text" id="admin-supabase-url" class="input-field" value="${DB.supabaseUrl || ''}" placeholder="https://your-project.supabase.co">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Supabase Anon Key</label>
+                    <input type="text" id="admin-supabase-key" class="input-field" value="${DB.supabaseKey || ''}" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                </div>
+                <div style="margin-top:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:8px;">
+                    <p id="cloud-status" style="font-weight:bold;">Status: <span style="color:var(--text-muted);">Not Connected</span></p>
+                    <button id="btn-test-connection" class="btn-secondary" style="margin-top:0.5rem; font-size:0.8rem;">Test Connection</button>
+                </div>
             </div>
         </div>
         
@@ -945,6 +984,15 @@ async function showAdminPanel() {
             // Save General
             const newPin = container.querySelector('#admin-pin-input').value.trim();
             if (newPin) DB.staffPin = newPin;
+
+            // Save Cloud Settings
+            const supUrl = container.querySelector('#admin-supabase-url').value.trim();
+            const supKey = container.querySelector('#admin-supabase-key').value.trim();
+            if (supUrl && supKey) {
+                DB.supabaseUrl = supUrl;
+                DB.supabaseKey = supKey;
+                initSupabase(); // Initialize immediately
+            }
 
             // Save Services
             const svcCards = container.querySelectorAll('#admin-services-container .admin-card');
@@ -1400,11 +1448,53 @@ function viewStoredReceipt(receiptId, copyType = 'customer') {
 function redownloadReceipt(receiptId) {
     const record = DB.transactions.find(t => t.receiptId === receiptId);
     if (record) {
-        generatePDF(receiptId, 'both');
-    } else {
-        Modal.alert('Error', 'Receipt not found in records.');
+        // Find if we have a stored PDF
+        const stored = getStoredPDF(receiptId, 'customer');
+        if (stored) {
+            viewStoredReceipt(receiptId, 'customer');
+        } else {
+            generatePDF(receiptId, 'customer');
+        }
     }
 }
+
+// ============ 12. SUPABASE INTEGRATION ============
+let supabaseClient = null;
+
+function initSupabase() {
+    if (DB.supabaseUrl && DB.supabaseKey) {
+        try {
+            supabaseClient = supabase.createClient(DB.supabaseUrl, DB.supabaseKey);
+            console.log("Supabase Client Initialized");
+
+            // Realtime Subscription
+            supabaseClient
+                .channel('transactions')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'transactions' }, payload => {
+                    console.log('New transaction received!', payload.new);
+                    // Avoid duplicates
+                    if (!DB.transactions.find(t => t.receiptId === payload.new.receiptId)) {
+                        DB.transactions.unshift(payload.new);
+                        saveDB();
+                        if (!header.classList.contains('hidden') && $('staff-view') && !$('staff-view').classList.contains('hidden')) {
+                            updateDailyStats();
+                            renderTransactionHistory();
+                            renderApplications();
+                            Modal.alert('New Application', `New request from ${payload.new.customerName}`);
+                        }
+                    }
+                })
+                .subscribe();
+
+        } catch (e) {
+            console.error("Supabase Init Error:", e);
+        }
+    }
+}
+
+// Initialize on Load
+// Initialize on Load
+// (Moved initSupabase call to main event listener below)
 
 // ============ 12. EVENT LISTENERS ============
 document.addEventListener('DOMContentLoaded', () => {
@@ -1429,4 +1519,5 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutBtn.addEventListener('click', logout); // FIXED: Logout button now works
 
     switchView('login');
+    initSupabase();
 });
