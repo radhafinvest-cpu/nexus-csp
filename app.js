@@ -802,7 +802,6 @@ async function showAdminPanel() {
             <button class="admin-tab" data-tab="services">🛠️ Services</button>
             <button class="admin-tab" data-tab="promo">📢 Promo Banner</button>
             <button class="admin-tab" data-tab="bankaccount">🏦 Bank Account</button>
-            <button class="admin-tab" data-tab="cloud" style="border-color:var(--accent-secondary); color:var(--accent-secondary);">☁️ Cloud Sync</button>
         </div>
         
         <!-- GENERAL TAB -->
@@ -813,28 +812,6 @@ async function showAdminPanel() {
             </div>
         </div>
 
-        <!-- CLOUD SYNC TAB -->
-        <div id="tab-cloud" class="admin-section">
-            <div class="admin-card">
-                <h5 style="color:var(--accent-primary);">☁️ Supabase Cloud Connection</h5>
-                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
-                    Connect your app to the cloud to sync data between devices (Customer <-> Staff).
-                </p>
-                <div class="input-group">
-                    <label class="input-label">Supabase URL</label>
-                    <input type="text" id="admin-supabase-url" class="input-field" value="${DB.supabaseUrl || ''}" placeholder="https://your-project.supabase.co">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Supabase Anon Key</label>
-                    <input type="text" id="admin-supabase-key" class="input-field" value="${DB.supabaseKey || ''}" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-                </div>
-                <div style="margin-top:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:8px;">
-                    <p id="cloud-status" style="font-weight:bold;">Status: <span style="color:var(--text-muted);">Not Connected</span></p>
-                    <button id="btn-test-connection" class="btn-secondary" style="margin-top:0.5rem; font-size:0.8rem;">Test Connection</button>
-                </div>
-            </div>
-        </div>
-        
         <!-- SERVICES TAB -->
         <div id="tab-services" class="admin-section">
             <div id="admin-services-container"></div>
@@ -984,15 +961,6 @@ async function showAdminPanel() {
             // Save General
             const newPin = container.querySelector('#admin-pin-input').value.trim();
             if (newPin) DB.staffPin = newPin;
-
-            // Save Cloud Settings
-            const supUrl = container.querySelector('#admin-supabase-url').value.trim();
-            const supKey = container.querySelector('#admin-supabase-key').value.trim();
-            if (supUrl && supKey) {
-                DB.supabaseUrl = supUrl;
-                DB.supabaseKey = supKey;
-                initSupabase(); // Initialize immediately
-            }
 
             // Save Services
             const svcCards = container.querySelectorAll('#admin-services-container .admin-card');
