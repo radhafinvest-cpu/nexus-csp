@@ -1438,6 +1438,13 @@ function initSupabase() {
             supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             console.log("Supabase Client Initialized with Hardcoded Credentials");
 
+            // Connection Test
+            supabaseClient.from('transactions').select('count', { count: 'exact', head: true })
+                .then(({ error }) => {
+                    if (error) Modal.alert('Cloud Error', 'Failed to connect: ' + error.message);
+                    else Modal.alert('Cloud Connected', 'Successfully connected to database!');
+                });
+
             // Realtime Subscription
             supabaseClient
                 .channel('transactions')
@@ -1459,6 +1466,7 @@ function initSupabase() {
 
         } catch (e) {
             console.error("Supabase Init Error:", e);
+            Modal.alert('Init Error', e.message);
         }
     }
 }
