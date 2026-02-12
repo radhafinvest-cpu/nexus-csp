@@ -802,7 +802,7 @@ async function showAdminPanel() {
             <button class="admin-tab" data-tab="services">🛠️ Services</button>
             <button class="admin-tab" data-tab="promo">📢 Promo Banner</button>
             <button class="admin-tab" data-tab="bankaccount">🏦 Bank Account</button>
-            <button class="admin-tab" data-tab="cloud">☁️ Cloud Sync</button>
+            <button class="admin-tab" data-tab="cloud" style="border-color:var(--accent-secondary); color:var(--accent-secondary);">☁️ Cloud Sync</button>
         </div>
         
         <!-- GENERAL TAB -->
